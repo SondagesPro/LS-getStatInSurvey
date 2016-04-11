@@ -1,6 +1,6 @@
 # getStatInSurvey
 
-Allow to show some statictics from previus answers in survey in question text, help and answers.
+Allow to show some statictics from previous answers in survey in question text, help and answers.
 
 ## Documentation
 
@@ -22,6 +22,19 @@ You can show statistics from this question type : single choice, numeric and equ
 To use this number in Expression manager : you must use the quote : for example `{if(('[Q.nb.A1]'-100)>0,"There are "+('[Q.nb.A1]'-100)+" before this answer is quota out","This answer is quota out")}` .
 
 Relevance equation can not use this replacement.
+
+## Installation
+
+This plugin is tested with LimeSurvey 2.06.
+
+### Via GIT
+- Go to your LimeSurvey Directory (version up to 2.06 only)
+- Clone in plugins/exportFilter directory `git clone https://git.framasoft.org/SondagePro-LimeSurvey-plugin/getStatInSurvey.git getStatInSurvey`
+
+### Via ZIP dowload
+- Download <http://extensions.sondages.pro/IMG/auto/getStatInSurvey.zip>
+- Extract : `unzip getStatInSurvey.zip`
+- Move the directory to  plugins/ directory inside LimeSUrvey
 
 ## Copyright
 - Copyright © 2015-2016 Denis Chenu <http://sondages.pro>
