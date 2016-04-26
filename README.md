@@ -9,7 +9,7 @@ You can show statistics from this question type : single choice, numeric and equ
 * To show average of a question : use moyenne
   * `[Q.moyenne]` give the average
   * `[Q.moy]` give the average in integer
-  * `[Q.mopy2]` give the average rounded with 2 decimalq
+  * `[Q.moy2]` give the average rounded with 2 decimalq
 * To show percentage : use pourcent
   * `[Q.pourcent]` : show the percentage with the same answer of respondant, betwwen 0 and 1
   * `[Q.pc]` : show the prercentage with the same answer but betwwen 0 and 100 without decimals
