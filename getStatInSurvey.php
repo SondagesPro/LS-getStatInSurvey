@@ -8,7 +8,7 @@
  * @copyright 2015-2016 DareDo SA <http://www.daredo.net/>
  * @copyright 2016 Update France - Terrain d'études <http://www.updatefrance.fr/>
  * @license GPL v3
- * @version 1.3.0
+ * @version 1.3.1
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -85,6 +85,7 @@ class getStatInSurvey extends \ls\pluginmanager\PluginBase {
         $oSurvey=Survey::model()->findByPk($this->iSurveyId);
         if($oSurvey && $oSurvey->active=="Y")
         {
+            $this->sDebugWhere = "question {$oEvent->get("qid")} ({$oEvent->get("code")})";
             $oEvent->set('text',$this->doReplacement($oEvent->get('text')));
             $oEvent->set('questionhelp',$this->doReplacement($oEvent->get('questionhelp')));
             $oEvent->set('answers',$this->doReplacement($oEvent->get('answers')));
@@ -102,22 +103,17 @@ class getStatInSurvey extends \ls\pluginmanager\PluginBase {
         {
             $sQCode=$aMatch[0];
             $oQuestion=Question::model()->find("sid=:sid AND title=:title and parent_qid=0",array(":sid"=>$this->iSurveyId,":title"=>$sQCode));
-
-            if(!$oQuestion)
-            {
-                tracevar("getStatInSurvey : Invalid question code $sQCode in ".$this->sDebugWhere);
-                return;
+            if(!$oQuestion) {
+                return $this->_logUsage("Invalid question code : {$sQCode} in ".$this->sDebugWhere);
             }
             $sType=$aMatch[1];
             $sValue=(count($aMatch)>=3) ? $aMatch[2] : null;
-
             switch ($sType)
             {
                 case 'moyenne':
                 case 'moy':
                 case 'moy2':
-                    switch ($oQuestion->type)
-                    {
+                    switch ($oQuestion->type) {
                         case "5":
                         case "L":
                         case "!":
@@ -127,12 +123,12 @@ class getStatInSurvey extends \ls\pluginmanager\PluginBase {
                         case "S":
                             return $this->getAverage($this->iSurveyId."X".$oQuestion->gid."X".$oQuestion->qid,$sType);
                         default:
-                            tracevar("getStatInSurvey : Invalid question type : $sType in ".$this->sDebugWhere);
-                            return;
+                            return $this->_logUsage("{$sMatch} : Invalid question type : {$oQuestion->type} in {$this->sDebugWhere}");
                     }
                     break;
                 case 'pourcent':
                 case 'pc':
+                    switch ($oQuestion->type) {
                         case "5":
                         case "L":
                         case "!":
@@ -146,10 +142,11 @@ class getStatInSurvey extends \ls\pluginmanager\PluginBase {
                         case "S":
                             return $this->getPercentage($this->iSurveyId."X".$oQuestion->gid."X".$oQuestion->qid, $sValue,$sType);
                         default:
-                            tracevar("getStatInSurvey : Invalid question type : $sType in ".$this->sDebugWhere);
-                            return;
-                    return;
+                            return $this->_logUsage("{$sMatch} Invalid question type : {$oQuestion->type} in {$this->sDebugWhere}");
+                    }
+                    break;
                 case 'nb':
+                    switch ($oQuestion->type) {
                         case "5":
                         case "L":
                         case "!":
@@ -163,10 +160,11 @@ class getStatInSurvey extends \ls\pluginmanager\PluginBase {
                         case "S":
                             return $this->getCount($this->iSurveyId."X".$oQuestion->gid."X".$oQuestion->qid, $sValue);
                         default:
-                            tracevar("getStatInSurvey : Invalid question type : $sType in ".$this->sDebugWhere);
-                            return;
-                    return;
+                            return $this->_logUsage("{$sMatch} : Invalid question type : {$oQuestion->type} in {$this->sDebugWhere}");
+                    }
+                    break;
                 case 'nbnum':
+                    switch ($oQuestion->type) {
                         case "5":
                         case "L":
                         case "!":
@@ -176,11 +174,11 @@ class getStatInSurvey extends \ls\pluginmanager\PluginBase {
                         case "S":
                             return $this->getCount($this->iSurveyId."X".$oQuestion->gid."X".$oQuestion->qid, $sValue);
                         default:
-                            tracevar("getStatInSurvey : Invalid question type : $sType in ".$this->sDebugWhere);
-                            return;
-                    return;
+                            return $this->_logUsage("{$sMatch} : Invalid question type : {$oQuestion->type} in {$this->sDebugWhere}");
+                    }
+                    break;
                 default:
-                    tracevar("getStatInSurvey : Unknow type : $sType in ".$this->sDebugWhere);
+                    return $this->_logUsage("Unknow type : {$oQuestion->type} in ".$this->sDebugWhere);
                     return;
 
             }
@@ -327,5 +325,16 @@ class getStatInSurvey extends \ls\pluginmanager\PluginBase {
             }
         }
         return $string;
+    }
+
+    /**
+     * Logging uage error system
+     * @param string to log
+     * @return null|string
+     */
+    private function _logUsage($string) {
+        Yii::log($string,'warning',"application.plugins.getStatInSurvey"); // Log as warning or as error ? Warning for adin user more than an error.
+        tracevar("getStatInSurvey : $string");
+        return;
     }
 }
