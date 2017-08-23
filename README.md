@@ -21,7 +21,9 @@ You can show statistics from this question type : single choice, numeric and equ
 
 To use this number in Expression manager : you must use the quote : for example `{if(('[Q.nb.A1]'-100)>0,"There are "+('[Q.nb.A1]'-100)+" before this answer is quota out","This answer is quota out")}` .
 
-Relevance equation can not use this replacement.
+You can use same system for workaround with class-name and javascript.
+
+**Relevance equation can not use this replacement**.
 
 ## Installation
 
@@ -37,7 +39,7 @@ This plugin is tested with LimeSurvey 2.06.
 - Move the directory to  plugins/ directory inside LimeSUrvey
 
 ## Copyright
-- Copyright © 2015-2016 Denis Chenu <http://sondages.pro>
+- Copyright © 2015-2017 Denis Chenu <http://sondages.pro>
 - Copyright © 2015-2016 DareDo SA <http://www.daredo.net/>
 - Copyright © 2016 Update France - Terrain d'études <http://www.updatefrance.fr/>
 - Licence : GNU General Public License <https://www.gnu.org/licenses/gpl-3.0.html>

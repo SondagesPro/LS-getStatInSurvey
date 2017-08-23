@@ -8,7 +8,7 @@
  * @copyright 2015-2016 DareDo SA <http://www.daredo.net/>
  * @copyright 2016 Update France - Terrain d'études <http://www.updatefrance.fr/>
  * @license GPL v3
- * @version 1.2
+ * @version 1.3.0
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,11 @@ class getStatInSurvey extends \ls\pluginmanager\PluginBase {
     protected $storage = 'DbStorage';
     static protected $name = 'getStatInSurvey';
     static protected $description = 'Permet d’avoir les moyennes et pourcentages de certaines questions.';
+
+    /**
+     * @var string sDebugWhere
+     */
+    private $sDebugWhere = "";
 
     public function init() {
         // @todo $this->subscribe('beforeSurveySettings');
@@ -96,7 +101,7 @@ class getStatInSurvey extends \ls\pluginmanager\PluginBase {
         if(count($aMatch)>=2 )
         {
             $sQCode=$aMatch[0];
-            $oQuestion=Question::model()->find("sid=:sid AND title=:title",array(":sid"=>$this->iSurveyId,":title"=>$sQCode));
+            $oQuestion=Question::model()->find("sid=:sid AND title=:title and parent_qid=0",array(":sid"=>$this->iSurveyId,":title"=>$sQCode));
 
             if(!$oQuestion)
             {
