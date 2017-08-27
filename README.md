@@ -27,7 +27,7 @@ You can use same system for workaround with class-name and javascript.
 
 ## Installation
 
-This plugin is tested with LimeSurvey 2.06.
+This plugin is tested with LimeSurvey 2.06 and 2.65.
 
 ### Via GIT
 - Go to your LimeSurvey Directory (version up to 2.06 only)

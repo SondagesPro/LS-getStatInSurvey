@@ -8,7 +8,7 @@
  * @copyright 2015-2016 DareDo SA <http://www.daredo.net/>
  * @copyright 2016 Update France - Terrain d'études <http://www.updatefrance.fr/>
  * @license GPL v3
- * @version 1.3.1
+ * @version 1.3.2
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,6 +31,10 @@ class getStatInSurvey extends \ls\pluginmanager\PluginBase {
      * @var string sDebugWhere
      */
     private $sDebugWhere = "";
+    /**
+     * @var string sDebugWhere
+     */
+    private $iSurveyId = 0;
 
     public function init() {
         // @todo $this->subscribe('beforeSurveySettings');
@@ -334,7 +338,9 @@ class getStatInSurvey extends \ls\pluginmanager\PluginBase {
      */
     private function _logUsage($string) {
         Yii::log($string,'warning',"application.plugins.getStatInSurvey"); // Log as warning or as error ? Warning for adin user more than an error.
-        tracevar("getStatInSurvey : $string");
+        if(Permission::model()->hasSurveyPermission($this->iSurveyId, 'surveycontent', 'update')) {
+            return "[{$string}]"; // If user can edit survey : allow to see the error (except with expression …)
+        }
         return;
     }
 }
