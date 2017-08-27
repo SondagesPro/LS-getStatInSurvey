@@ -4,11 +4,11 @@
  * Shows some statistics from previous answers
  *
  * @author Denis Chenu <denis@sondages.pro>
- * @copyright 2015-2016 Denis Chenu <http://sondages.pro>
+ * @copyright 2015-2017 Denis Chenu <http://sondages.pro>
  * @copyright 2015-2016 DareDo SA <http://www.daredo.net/>
  * @copyright 2016 Update France - Terrain d'études <http://www.updatefrance.fr/>
  * @license GPL v3
- * @version 1.3.2
+ * @version 1.3.3
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ class getStatInSurvey extends \ls\pluginmanager\PluginBase {
 
     protected $storage = 'DbStorage';
     static protected $name = 'getStatInSurvey';
-    static protected $description = 'Permet d’avoir les moyennes et pourcentages de certaines questions.';
+    static protected $description = 'Get medium and percentage of answers during survey (version 1.3.3).';
 
     /**
      * @var string sDebugWhere
@@ -176,7 +176,7 @@ class getStatInSurvey extends \ls\pluginmanager\PluginBase {
                         case "N":
                         case "*":
                         case "S":
-                            return $this->getCount($this->iSurveyId."X".$oQuestion->gid."X".$oQuestion->qid, $sValue);
+                            return $this->getCountNumeric($this->iSurveyId."X".$oQuestion->gid."X".$oQuestion->qid, $sValue);
                         default:
                             return $this->_logUsage("{$sMatch} : Invalid question type : {$oQuestion->type} in {$this->sDebugWhere}");
                     }
@@ -205,12 +205,9 @@ class getStatInSurvey extends \ls\pluginmanager\PluginBase {
         $oCriteria->addCondition("concat('',{$sQuotedColumn} * 1) = {$sQuotedColumn}");
         $iSum = Yii::app()->db->getCommandBuilder()->createFindCommand(SurveyDynamic::model($this->iSurveyId)->getTableSchema(),$oCriteria)->queryScalar();
 
-        if($iTotal > 0)
-        {
+        if($iTotal > 0){
             $aAverage[$sColumn]=$iSum/$iTotal;
-        }
-        else
-        {
+        } else {
             $aAverage[$sColumn]="";
             return $aAverage[$sColumn];
         }
@@ -267,10 +264,12 @@ class getStatInSurvey extends \ls\pluginmanager\PluginBase {
     private function getCountNumeric($sColumn)
     {
         $aCountNumeric=array(); // Go to cache ?
-        if(isset($aCountNumeric[$sColumn]))
+        if(isset($aCountNumeric[$sColumn])) {
             return $aCountNumeric[$sColumn];
+        }
         $sQuotedColumn=Yii::app()->db->quoteColumnName($sColumn);
         $aCountNumeric[$sColumn]=(int) SurveyDynamic::model($this->iSurveyId)->count("submitdate IS NOT NULL AND concat('',{$sQuotedColumn} * 1) = {$sQuotedColumn}");
+        tracevar($aCountNumeric[$sColumn]);
         return $aCountNumeric[$sColumn];
     }
     /**
@@ -281,14 +280,14 @@ class getStatInSurvey extends \ls\pluginmanager\PluginBase {
     private function getCount($sColumn,$sValue=null)
     {
         $aCount=array(); // Go to cache ?
-        if(isset($aCount[$sColumn][$sValue]))
+        if(isset($aCount[$sColumn][$sValue])) {
             return $aCount[$sColumn][$sValue];
+        }
         $sQuotedColumn=Yii::app()->db->quoteColumnName($sColumn);
         $oCriteria = new CDbCriteria;
         $oCriteria->condition="submitdate IS NOT NULL";
         $oCriteria->addCondition("{$sQuotedColumn} IS NOT NULL");
-        if(!is_null($sValue))
-        {
+        if(!is_null($sValue)) {
             $oCriteria->compare($sQuotedColumn,$sValue);
         }
         $aCount[$sColumn][$sValue]=intval(SurveyDynamic::model($this->iSurveyId)->count($oCriteria));
