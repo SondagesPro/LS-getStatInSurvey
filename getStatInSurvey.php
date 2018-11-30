@@ -8,7 +8,7 @@
  * @copyright 2015-2016 DareDo SA <http://www.daredo.net/>
  * @copyright 2016 Update France - Terrain d'études <http://www.updatefrance.fr/>
  * @license GPL v3
- * @version 1.3.3
+ * @version 2.0.0
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -90,9 +90,19 @@ class getStatInSurvey extends PluginBase {
         if($oSurvey && $oSurvey->active=="Y")
         {
             $this->sDebugWhere = "question {$oEvent->get("qid")} ({$oEvent->get("code")})";
-            $oEvent->set('text',$this->doReplacement($oEvent->get('text')));
-            $oEvent->set('questionhelp',$this->doReplacement($oEvent->get('questionhelp')));
-            $oEvent->set('answers',$this->doReplacement($oEvent->get('answers')));
+            $qid = $oEvent->get("qid");
+            if(intval(App()->getConfig('versionnumber')) < 4) {
+                $oQuestion = Question::model()->find("qid = :qid and language = :language",array(":qid"=>$qid,":language" => App()->getLanguage()));
+            } else {
+                $oQuestion = QuestionL10n::model()->find("qid = :qid and language = :language",array(":qid"=>$qid,":language" => App()->getLanguage()));
+            }
+            $text = $oQuestion->question;
+            $questionhelp = $oQuestion->help;
+            $answers = $oEvent->get('answers');
+            $oEvent->set('text',$this->doReplacement($text,$qid));
+            $oEvent->set('questionhelp',$this->doReplacement($questionhelp));/* pre 3.0 version */
+            $oEvent->set('help',$this->doReplacement($questionhelp,$qid));/* 3.0 and version */
+            $oEvent->set('answers',$this->doReplacement($answers));/* in 3.X and up Expression manager already happen */
         }
     }
 
@@ -295,10 +305,11 @@ class getStatInSurvey extends PluginBase {
     }
     /**
      * Replace specific string by value
-     * @param : $string : the string to replace
+     * @param string $string to replace
+     * @param integer $qid
      * @return string
      */
-    private function doReplacement($string)
+    private function doReplacement($string, $qid = null)
     {
         $iCount=preg_match_all ('/\[([a-zA-Z0-9\.\-]*?)\]/',$string,$aMatches);
         $aMatches=array_unique($aMatches[1]);
@@ -327,7 +338,11 @@ class getStatInSurvey extends PluginBase {
                 $string=str_replace(array_keys($aReplace),$aReplace,$string);
             }
         }
-        return $string;
+        if(!$qid || intval(App()->getConfig('versionnumber')) < 3) {
+            return $string;
+        }
+        return LimeExpressionManager::ProcessString($string, $qid, null, 3, 1, false, true, false);
+
     }
 
     /**
