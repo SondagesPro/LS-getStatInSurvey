@@ -2,7 +2,6 @@
 
 Allow to show some statictics from previous answers in survey in question text, help and answers.
 
-**This plugin is not compatible with LimeSurvey 3 and up version.**
 
 ## Documentation
 
@@ -21,9 +20,13 @@ You can show statistics from this question type : single choice, numeric and equ
   * `[Q.nbnum]` : show the total numeric number of answers
   * `[Q.nb.A1]` : show the number of answer A1 to question Q
 
+You can use this variable in javascript workaround.
+
+### Usage in Expression Manager ###
+
 To use this number in Expression manager : you must use the quote : for example `{if(('[Q.nb.A1]'-100)>0,"There are "+('[Q.nb.A1]'-100)+" before this answer is quota out","This answer is quota out")}` .
 
-You can use same system for workaround with class-name and javascript.
+**This system is not compatible with LimeSurvey 3 and up version.In LimeSurvey 3 version : you can't not use the value inside Expression Manager. In next 4.X version : this system come back.**
 
 **Relevance equation can not use this replacement**.
 

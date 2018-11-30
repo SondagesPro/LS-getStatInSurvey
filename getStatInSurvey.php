@@ -21,7 +21,7 @@
  * GNU General Public License for more details.
  *
  */
-class getStatInSurvey extends \ls\pluginmanager\PluginBase {
+class getStatInSurvey extends PluginBase {
 
     protected $storage = 'DbStorage';
     static protected $name = 'getStatInSurvey';
