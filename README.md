@@ -2,6 +2,8 @@
 
 Allow to show some statictics from previous answers in survey in question text, help and answers.
 
+**This plugin is not compatible with LimeSurvey 3 and up version.**
+
 ## Documentation
 
 You can show statistics from this question type : single choice, numeric and equation. You use the code of question, the statistic you want and, optionnaly, the answer code surrounded by bracket (`[Qcode.type.answer]`).
