@@ -51,6 +51,9 @@ class getStatInSurvey extends PluginBase {
      */
     public function beforeSurveySettings()
     {
+        if (!$this->getEvent()) {
+            throw new CHttpException(403);
+        }
         $oEvent = $this->event;
         $this->iSurveyId=$oEvent->get('survey');
     }
@@ -59,6 +62,9 @@ class getStatInSurvey extends PluginBase {
     */
     public function newSurveySettings()
     {
+        if (!$this->getEvent()) {
+            throw new CHttpException(403);
+        }
         $oEvent = $this->event;
         $this->iSurveyId=$oEvent->get('survey');
     }
@@ -68,6 +74,9 @@ class getStatInSurvey extends PluginBase {
     */
     public function afterSurveyComplete()
     {
+        if (!$this->getEvent()) {
+            throw new CHttpException(403);
+        }
         $oEvent=$this->getEvent();
         $this->iSurveyId=$oEvent->get('surveyId');
         $iResponseId=$oEvent->get('responseId');
@@ -84,6 +93,9 @@ class getStatInSurvey extends PluginBase {
     */
     public function beforeQuestionRender()
     {
+        if (!$this->getEvent()) {
+            throw new CHttpException(403);
+        }
         $oEvent=$this->getEvent();
         $this->iSurveyId=$oEvent->get('surveyId');
         $oSurvey=Survey::model()->findByPk($this->iSurveyId);
