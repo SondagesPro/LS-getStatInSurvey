@@ -5,7 +5,7 @@ Allow to show some statictics from previous answers in survey in question text, 
 
 ## Documentation
 
-You can show statistics from this question type : single choice, numeric and equation. You use the code of question, the statistic you want and, optionnaly, the answer code surrounded by bracket (`[Qcode.type.answer]`).
+You can show statistics from this question type : short text, single choice (dropdown, radio, 5 point, Gender …), numeric and equation question type. You use the code of question, the statistic you want and, optionnaly, the answer code surrounded by bracket (`[Qcode.type.answer]`).
 
 * To show average of a question : use moyenne
   * `[Q.moyenne]` give the average
@@ -26,13 +26,15 @@ You can use this variable in javascript workaround.
 
 To use this number in Expression manager : you must use the quote : for example `{if(('[Q.nb.A1]'-100)>0,"There are "+('[Q.nb.A1]'-100)+" before this answer is quota out","This answer is quota out")}` .
 
-**You can not use this system in expression manager for answer part in LimeSurvey 3 and up.**
+### Specific restrictions ###
 
-**Relevance equation can not use this replacement**.
+- You can not use this system in expression manager for _answer part_ (answers or subquestion) in LimeSurvey 3 and up;
+- Relevance equation can not use this replacement;
+- No update was done when survey is not activated.
 
 ## Installation
 
-This plugin is tested with LimeSurvey 2.06,2.65 and 3.15.5
+This plugin is tested with LimeSurvey 2.06, 2.65, 3.15.5 and 3.26.3 
 
 ### Via GIT
 - Go to your LimeSurvey Directory (version up to 2.06 only)
@@ -44,7 +46,7 @@ This plugin is tested with LimeSurvey 2.06,2.65 and 3.15.5
 - Move the directory to  plugins/ directory inside LimeSUrvey
 
 ## Copyright
-- Copyright © 2015-2018 Denis Chenu <http://sondages.pro>
+- Copyright © 2015-2021 Denis Chenu <http://sondages.pro>
 - Copyright © 2015-2016 DareDo SA <http://www.daredo.net/>
 - Copyright © 2016 Update France - Terrain d'études <http://www.updatefrance.fr/>
 - Licence : GNU General Public License <https://www.gnu.org/licenses/gpl-3.0.html>
