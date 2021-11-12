@@ -46,7 +46,8 @@ This plugin is tested with LimeSurvey 2.06, 2.65, 3.15.5 and 3.26.3
 - Move the directory to  plugins/ directory inside LimeSUrvey
 
 ## Copyright
-- Copyright © 2015-2021 Denis Chenu <http://sondages.pro>
+- Copyright © 2015-2021 Denis Chenu <https://sondages.pro>
+- Copyright © 2021 Limesurvey GMBH <https://limesurvey.org>
 - Copyright © 2015-2016 DareDo SA <http://www.daredo.net/>
 - Copyright © 2016 Update France - Terrain d'études <http://www.updatefrance.fr/>
 - Licence : GNU General Public License <https://www.gnu.org/licenses/gpl-3.0.html>

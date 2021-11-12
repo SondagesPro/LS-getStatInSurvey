@@ -4,11 +4,11 @@
  * Shows some statistics from previous answers
  *
  * @author Denis Chenu <denis@sondages.pro>
- * @copyright 2015-2017 Denis Chenu <http://sondages.pro>
+ * @copyright 2015-2021 Denis Chenu <http://sondages.pro>
  * @copyright 2015-2016 DareDo SA <http://www.daredo.net/>
  * @copyright 2016 Update France - Terrain d'études <http://www.updatefrance.fr/>
  * @license GPL v3
- * @version 2.0.0
+ * @version 2.1.0
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -350,11 +350,15 @@ class getStatInSurvey extends PluginBase {
                 $string=str_replace(array_keys($aReplace),$aReplace,$string);
             }
         }
+        /* Current version */
+        if(version_compare(App()->getConfig('versionnumber'), "3.6.1", ">")) {
+            return LimeExpressionManager::ProcessStepString($string);
+        }
         if(!$qid || intval(App()->getConfig('versionnumber')) < 3) {
             return $string;
         }
+        /* Pre 3.X version */
         return LimeExpressionManager::ProcessString($string, $qid, null, 3, 1, false, true, false);
-
     }
 
     /**
