@@ -9,7 +9,7 @@
  * @copyright 2015-2016 DareDo SA <http://www.daredo.net/>
  * @copyright 2016 Update France - Terrain d'études <http://www.updatefrance.fr/>
  * @license GPL v3
- * @version 2.1.1
+ * @version 2.2.0
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@ class getStatInSurvey extends PluginBase {
 
     protected $storage = 'DbStorage';
     static protected $name = 'getStatInSurvey';
-    static protected $description = 'Get medium and percentage of answers during survey.';
+    static protected $description = 'Get mean and percentage of answers during survey.';
 
     /**
      * @var string sDebugWhere
@@ -140,6 +140,9 @@ class getStatInSurvey extends PluginBase {
                 case 'moyenne':
                 case 'moy':
                 case 'moy2':
+                case 'mean':
+                case 'mean0':
+                case 'mean2':
                     switch ($oQuestion->type) {
                         case "5":
                         case "L":
@@ -154,6 +157,7 @@ class getStatInSurvey extends PluginBase {
                     }
                     break;
                 case 'pourcent':
+                case 'percent':
                 case 'pc':
                     switch ($oQuestion->type) {
                         case "5":
@@ -234,13 +238,20 @@ class getStatInSurvey extends PluginBase {
             $aAverage[$sColumn]="";
             return $aAverage[$sColumn];
         }
-        if($sType=="moy"){
-            return round($aAverage[$sColumn]);
-        }elseif($sType=="moy2"){
-            return round($aAverage[$sColumn]*100)/100;
-        }else{
-            return $aAverage[$sColumn];
+        
+        switch ($sType) {
+            case "moy":
+            case "mean0":
+                return round($aAverage[$sColumn]);
+            case "moy2":
+            case "mean2":
+                return round($aAverage[$sColumn]*100)/100;
+            case "moyenne":
+            case "mean":
+            default:
+                return $aAverage[$sColumn];
         }
+        // return is done
     }
     private function getPercentage($sColumn,$sValue=null,$sType="pc")
     {
@@ -275,11 +286,15 @@ class getStatInSurvey extends PluginBase {
             $aPercentage[$sColumn][$sValue]="";
             return $aPercentage[$sColumn][$sValue];
         }
-        if($sType=='pc') {
-            return round($aPercentage[$sColumn][$sValue]*100);
-        } else {
-            return $aPercentage[$sColumn][$sValue]*100;
+        switch ($sType) {
+            case "pc":
+                return round($aPercentage[$sColumn][$sValue]*100);
+            case "pourcent":
+            case "percent":
+            default:
+                return $aPercentage[$sColumn][$sValue]*100;
         }
+        // return is done
     }
     /**
      * Get the count of answered for a numeric question type (only numeric answers)
@@ -326,32 +341,33 @@ class getStatInSurvey extends PluginBase {
     private function doReplacement($string, $qid = null)
     {
         $iCount=preg_match_all ('/\[([a-zA-Z0-9\.\-]*?)\]/',$string,$aMatches);
+        if(!$iCount) {
+            return;
+        }
         $aMatches=array_unique($aMatches[1]);
-        if($iCount)
+        $aReplace=$aQuoteReplace=array();
+        foreach($aMatches as $sMatch)
         {
-            $aReplace=$aQuoteReplace=array();
-            foreach($aMatches as $sMatch)
+            $sValue=$this->getValue($sMatch);
+            if(null!==$sValue)
             {
-                $sValue=$this->getValue($sMatch);
-                if(null!==$sValue)
-                {
-                    $aReplace["[".$sMatch."]"]=$sValue;
-                    if(is_numeric($sValue))
-                        $aQuoteReplace["\"[".$sMatch."]\""]=$sValue;
-                    else
-                        $aQuoteReplace["\"[".$sMatch."]\""]='"'.$sValue.'"';
+                $aReplace["[".$sMatch."]"]=$sValue;
+                if(is_numeric($sValue))
+                    $aQuoteReplace["\"[".$sMatch."]\""]=$sValue;
+                else
+                    $aQuoteReplace["\"[".$sMatch."]\""]='"'.$sValue.'"';
 
-                }
-            }
-            if(!empty($aQuoteReplace))
-            {
-                $string=str_replace(array_keys($aQuoteReplace),$aQuoteReplace,$string);
-            }
-            if(!empty($aReplace))
-            {
-                $string=str_replace(array_keys($aReplace),$aReplace,$string);
             }
         }
+        if(!empty($aQuoteReplace))
+        {
+            $string=str_replace(array_keys($aQuoteReplace),$aQuoteReplace,$string);
+        }
+        if(!empty($aReplace))
+        {
+            $string=str_replace(array_keys($aReplace),$aReplace,$string);
+        }
+
         /* Current version */
         if(version_compare(App()->getConfig('versionnumber'), "3.6.1", ">")) {
             return LimeExpressionManager::ProcessStepString($string);

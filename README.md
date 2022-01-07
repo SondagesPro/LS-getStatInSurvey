@@ -13,13 +13,18 @@ You can show statistics from these question type :
 
 You use the code of question (Qcode), the statistic you want and, optionally, the answer code surrounded by bracket (`[Qcode.type.answer]`).
 
-* To show average of a question : use moyenne
+* To show average of a question :
+  * `[Qcode.mean]` give the average
+  * `[Qcode.mean0]` give the average in integer
+  * `[Qcode.mean2]` give the average rounded with 2 decimals
   * `[Qcode.moyenne]` give the average
   * `[Qcode.moy]` give the average in integer
   * `[Qcode.moy2]` give the average rounded with 2 decimals
-* To show percentage : use pourcent
+* To show percentage : 
+  * `[Qcode.percent]` : show the percentage with the same answer of respondant, between 0 and 100 with all decimals
   * `[Qcode.pourcent]` : show the percentage with the same answer of respondant, between 0 and 100 with all decimals
   * `[Qcode.pc]` : show the percentage with the same answer but between 0 and 100 without decimals
+  * `[Qcode.percent.A1]` : show percentage with the answer A1
   * `[Qcode.pourcent.A1]` : show percentage with the answer A1
 * To shown number of answer
   * `[Qcode.nb]` : show the total number of answers
