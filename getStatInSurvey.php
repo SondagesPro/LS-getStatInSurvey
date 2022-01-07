@@ -5,10 +5,11 @@
  *
  * @author Denis Chenu <denis@sondages.pro>
  * @copyright 2015-2021 Denis Chenu <http://sondages.pro>
+ * @copyright 2021 Limesurvey GMBH <https://limesurvey.org>
  * @copyright 2015-2016 DareDo SA <http://www.daredo.net/>
  * @copyright 2016 Update France - Terrain d'études <http://www.updatefrance.fr/>
  * @license GPL v3
- * @version 2.1.0
+ * @version 2.1.1
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +26,7 @@ class getStatInSurvey extends PluginBase {
 
     protected $storage = 'DbStorage';
     static protected $name = 'getStatInSurvey';
-    static protected $description = 'Get medium and percentage of answers during survey (version 1.3.3).';
+    static protected $description = 'Get medium and percentage of answers during survey.';
 
     /**
      * @var string sDebugWhere
@@ -263,20 +264,22 @@ class getStatInSurvey extends PluginBase {
         $oCriteria->condition="submitdate IS NOT NULL";
         $oCriteria->compare($sQuotedColumn,$sValue);
 
-        $iCount=SurveyDynamic::model($this->iSurveyId)->count($oCriteria);
+        $iCount=intval(SurveyDynamic::model($this->iSurveyId)->count($oCriteria));
 
-        if(!isset($aPercentage[$sColumn]))
-        {
+        if(!isset($aPercentage[$sColumn])) {
             $aPercentage[$sColumn]=array();
         }
-        if($iTotal > 0)
+        if($iTotal > 0) {
             $aPercentage[$sColumn][$sValue]=$iCount/$iTotal;
-        else
+        } else {
             $aPercentage[$sColumn][$sValue]="";
-        if($sType=='pc')
+            return $aPercentage[$sColumn][$sValue];
+        }
+        if($sType=='pc') {
             return round($aPercentage[$sColumn][$sValue]*100);
-        else
+        } else {
             return $aPercentage[$sColumn][$sValue]*100;
+        }
     }
     /**
      * Get the count of answered for a numeric question type (only numeric answers)
@@ -291,7 +294,6 @@ class getStatInSurvey extends PluginBase {
         }
         $sQuotedColumn=Yii::app()->db->quoteColumnName($sColumn);
         $aCountNumeric[$sColumn]=(int) SurveyDynamic::model($this->iSurveyId)->count("submitdate IS NOT NULL AND concat('',{$sQuotedColumn} * 1) = {$sQuotedColumn}");
-        tracevar($aCountNumeric[$sColumn]);
         return $aCountNumeric[$sColumn];
     }
     /**

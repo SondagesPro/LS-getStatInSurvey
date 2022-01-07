@@ -16,10 +16,10 @@ You use the code of question (Qcode), the statistic you want and, optionally, th
 * To show average of a question : use moyenne
   * `[Qcode.moyenne]` give the average
   * `[Qcode.moy]` give the average in integer
-  * `[Qcode.moy2]` give the average rounded with 2 decimalq
+  * `[Qcode.moy2]` give the average rounded with 2 decimals
 * To show percentage : use pourcent
-  * `[Qcode.pourcent]` : show the percentage with the same answer of respondant, betwwen 0 and 1
-  * `[Qcode.pc]` : show the prercentage with the same answer but betwwen 0 and 100 without decimals
+  * `[Qcode.pourcent]` : show the percentage with the same answer of respondant, between 0 and 100 with all decimals
+  * `[Qcode.pc]` : show the percentage with the same answer but between 0 and 100 without decimals
   * `[Qcode.pourcent.A1]` : show percentage with the answer A1
 * To shown number of answer
   * `[Qcode.nb]` : show the total number of answers
@@ -40,7 +40,7 @@ To use this number in Expression manager : you must use the quote : for example 
 
 ## Installation
 
-This plugin is tested with LimeSurvey 2.06, 2.65, 3.15.5 and 3.26.3 
+This plugin is tested with LimeSurvey 2.06, 2.65, 3.15.5, 3.26.3 and 5.2.8
 
 ### Via GIT
 - Go to your LimeSurvey Directory (version up to 2.06 only)
