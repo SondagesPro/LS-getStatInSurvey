@@ -1,30 +1,36 @@
 # getStatInSurvey
 
-Allow to show some statictics from previous answers in survey in question text, help and answers.
+Allow to show some statistics from previous answers in survey in question text, help and answers.
 
 
 ## Documentation
 
-You can show statistics from this question type : short text, single choice (dropdown, radio, 5 point, Gender …), numeric and equation question type. You use the code of question, the statistic you want and, optionnaly, the answer code surrounded by bracket (`[Qcode.type.answer]`).
+You can show statistics from these question type : 
+* short text
+* single choice (dropdown, radio, 5 point, Gender …)
+* numeric 
+* equation
+
+You use the code of question (Qcode), the statistic you want and, optionally, the answer code surrounded by bracket (`[Qcode.type.answer]`).
 
 * To show average of a question : use moyenne
-  * `[Q.moyenne]` give the average
-  * `[Q.moy]` give the average in integer
-  * `[Q.moy2]` give the average rounded with 2 decimalq
+  * `[Qcode.moyenne]` give the average
+  * `[Qcode.moy]` give the average in integer
+  * `[Qcode.moy2]` give the average rounded with 2 decimalq
 * To show percentage : use pourcent
-  * `[Q.pourcent]` : show the percentage with the same answer of respondant, betwwen 0 and 1
-  * `[Q.pc]` : show the prercentage with the same answer but betwwen 0 and 100 without decimals
-  * `[Q.pourcent.A1]` : show percentage with the answer A1
+  * `[Qcode.pourcent]` : show the percentage with the same answer of respondant, betwwen 0 and 1
+  * `[Qcode.pc]` : show the prercentage with the same answer but betwwen 0 and 100 without decimals
+  * `[Qcode.pourcent.A1]` : show percentage with the answer A1
 * To shown number of answer
-  * `[Q.nb]` : show the total number of answers
-  * `[Q.nbnum]` : show the total numeric number of answers
-  * `[Q.nb.A1]` : show the number of answer A1 to question Q
+  * `[Qcode.nb]` : show the total number of answers
+  * `[Qcode.nbnum]` : show the total numeric number of answers
+  * `[Qcode.nb.A1]` : show the number of answer A1 to question Q
 
 You can use this variable in javascript workaround.
 
 ### Usage in Expression Manager ###
 
-To use this number in Expression manager : you must use the quote : for example `{if(('[Q.nb.A1]'-100)>0,"There are "+('[Q.nb.A1]'-100)+" before this answer is quota out","This answer is quota out")}` .
+To use this number in Expression manager : you must use the quote : for example `{if(('[Qcode.nb.A1]'-100)>0,"There are "+('[Qcode.nb.A1]'-100)+" before this answer is quota out","This answer is quota out")}` .
 
 ### Specific restrictions ###
 
