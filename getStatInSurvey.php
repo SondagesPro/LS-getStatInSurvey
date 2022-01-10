@@ -9,7 +9,7 @@
  * @copyright 2015-2016 DareDo SA <http://www.daredo.net/>
  * @copyright 2016 Update France - Terrain d'études <http://www.updatefrance.fr/>
  * @license GPL v3
- * @version 2.2.0
+ * @version 2.2.1
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -109,13 +109,20 @@ class getStatInSurvey extends PluginBase {
             } else {
                 $oQuestion = QuestionL10n::model()->find("qid = :qid and language = :language",array(":qid"=>$qid,":language" => App()->getLanguage()));
             }
-            $text = $oQuestion->question;
-            $questionhelp = $oQuestion->help;
-            $answers = $oEvent->get('answers');
-            $oEvent->set('text',$this->doReplacement($text,$qid));
-            $oEvent->set('questionhelp',$this->doReplacement($questionhelp));/* pre 3.0 version */
-            $oEvent->set('help',$this->doReplacement($questionhelp,$qid));/* 3.0 and version */
-            $oEvent->set('answers',$this->doReplacement($answers));/* in 3.X and up Expression manager already happen */
+            $textReplaced = $this->doReplacement($oQuestion->question,$qid);
+            if(!is_null($textReplaced)) {
+                $oEvent->set('text',$textReplaced);
+            }
+            $questionhelpReplaced = $this->doReplacement($oQuestion->help,$qid);
+            if(!is_null($questionhelpReplaced)) {
+                $oEvent->set('questionhelp',$questionhelpReplaced); /* pre 3.0 version */
+                $oEvent->set('help',$this->$questionhelpReplaced); /* 3.0 and version */
+            }
+            /* in 3.X and up Expression manager already happen */
+            $answersReplaced = $this->doReplacement($oEvent->get('answers'));
+            if(!is_null($answersReplaced)) {
+                $oEvent->set('answers',$answersReplaced);
+            }
         }
     }
 
@@ -336,13 +343,13 @@ class getStatInSurvey extends PluginBase {
      * Replace specific string by value
      * @param string $string to replace
      * @param integer $qid
-     * @return string
+     * @return string|null
      */
     private function doReplacement($string, $qid = null)
     {
         $iCount=preg_match_all ('/\[([a-zA-Z0-9\.\-]*?)\]/',$string,$aMatches);
         if(!$iCount) {
-            return;
+            return null;
         }
         $aMatches=array_unique($aMatches[1]);
         $aReplace=$aQuoteReplace=array();
