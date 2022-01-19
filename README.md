@@ -26,12 +26,15 @@ You use the code of question (Qcode), the statistic you want and, optionally, th
   * `[Qcode.pc]` : show the percentage with the same answer but between 0 and 100 without decimals
   * `[Qcode.percent.A1]` : show percentage with the answer A1
   * `[Qcode.pourcent.A1]` : show percentage with the answer A1
-* To shown number of answer
+* To show number of answer
   * `[Qcode.nb]` : show the total number of answers
   * `[Qcode.nbnum]` : show the total numeric number of answers
   * `[Qcode.nb.A1]` : show the number of answer A1 to question Q
+* To show the answer code with the least filled responses
+  * `[Qcode.leastfilled]` : show the answer code that has the least filled responses (see docs/limesurvey_getstatinsurvey_leastfilled_example.lsa for example usage)
 
-You can use this variable in javascript workaround.
+
+You can use these variables in a javascript workaround, or in setting a default answer to a question.
 
 ### Usage in Expression Manager ###
 
