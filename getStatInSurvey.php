@@ -271,21 +271,18 @@ class getStatInSurvey extends PluginBase {
         }
         // return is done
     }
-     /**
+    /**
      * Get the least filled response
      * @param : $oQuestion : the question object
      */
     private function getLeastFilled($oQuestion)
     {
-        $aLeastFilled=array(); // Go to cache ?
-        if(isset($aLeastFilled[$sColumn]))
-            return $aLeastFilled[$sColumn];
         // get all answer codes then getcount on all of them
         $aAnswersFilled=array();
         foreach($oQuestion->answers as $key => $value) {
-            $aAnswersFilled[$value['code']] = $this->getCount($this->iSurveyId."X".$oQuestion->gid."X".$oQuestion->qid,$value['code']);
+            $aAnswersFilled[$value['code']]=$this->getCount($this->iSurveyId."X".$oQuestion->gid."X".$oQuestion->qid,$value['code']);
         }
-        if (!empty($aAnswersFilled)) {
+        if(!empty($aAnswersFilled)) {
             //return least filled code
             asort($aAnswersFilled);
             return key($aAnswersFilled);
