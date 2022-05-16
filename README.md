@@ -52,10 +52,10 @@ This plugin is tested with LimeSurvey 2.06, 2.65, 3.15.5, 3.26.3 and 5.2.8
 
 ### Via GIT
 - Go to your LimeSurvey Directory (version up to 2.06 only)
-- Clone in plugins directory `git clone https://git.framasoft.org/SondagePro-LimeSurvey-plugin/getStatInSurvey.git getStatInSurvey`
+- Clone in plugins directory `git clone https://gitlab.com/SondagesPro/ExportAndStats/getStatInSurvey.git getStatInSurvey`
 
 ### Via ZIP dowload
-- Download <http://extensions.sondages.pro/IMG/auto/getStatInSurvey.zip>
+- Download <https://dl.sondages.pro/getStatInSurvey.zip>
 - Extract : `unzip getStatInSurvey.zip`
 - Move the directory to  plugins/ directory inside LimeSUrvey
 
