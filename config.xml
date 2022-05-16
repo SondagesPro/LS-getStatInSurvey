@@ -4,14 +4,21 @@
         <name>getStatInSurvey</name>
         <type>plugin</type>
         <creationDate>2016-11-04</creationDate>
-        <lastUpdate>2021-11-12</lastUpdate>
+        <lastUpdate>2022-05-16</lastUpdate>
         <author>Denis Chenu</author>
         <authorUrl>https://www.sondages.pro</authorUrl>
-        <version>2.2.1</version>
+        <version>2.3.0</version>
         <license>GNU Affero General Public License v3.0</license>
         <description><![CDATA[Get mean and percentage of answers during survey.]]></description>
     </metadata>
-
+    <updaters>
+        <updater>
+            <stable>1</stable>
+            <type>git</type>
+            <source>https://gitlab.com/SondagesPro/ExportAndStats/getStatInSurvey</source>
+            <manualUpdateUrl>https://dl.sondages.pro/getStatInSurvey.zip</manualUpdateUrl>
+        </updater>
+    </updaters>
     <compatibility>
         <version>5</version>
         <version>3</version>
