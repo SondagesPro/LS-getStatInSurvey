@@ -26,7 +26,7 @@ class getStatInSurvey extends PluginBase {
 
     protected $storage = 'DbStorage';
     static protected $name = 'getStatInSurvey';
-    static protected $description = 'Get mean and percentage of answers during survey.';
+    static protected $description = 'Get mean, percentage and least filled of answers during survey.';
 
     /**
      * @var string sDebugWhere
@@ -215,6 +215,17 @@ class getStatInSurvey extends PluginBase {
                             return $this->_logUsage("{$sMatch} : Invalid question type : {$oQuestion->type} in {$this->sDebugWhere}");
                     }
                     break;
+                case 'leastfilled':
+                    switch ($oQuestion->type) {
+                        case "5":
+                        case "L":
+                        case "!":
+                        case "O":
+                            return $this->getLeastFilled($oQuestion);
+                        default:
+                            return $this->_logUsage("{$sMatch} : Invalid question type : {$oQuestion->type} in {$this->sDebugWhere}");
+                    }
+                    break;
                 default:
                     return $this->_logUsage("Unknow type : {$oQuestion->type} in ".$this->sDebugWhere);
                     return;
@@ -259,6 +270,24 @@ class getStatInSurvey extends PluginBase {
                 return $aAverage[$sColumn];
         }
         // return is done
+    }
+    /**
+     * Get the least filled response
+     * @param : $oQuestion : the question object
+     */
+    private function getLeastFilled($oQuestion)
+    {
+        // get all answer codes then getcount on all of them
+        $aAnswersFilled=array();
+        foreach($oQuestion->answers as $key => $value) {
+            $aAnswersFilled[$value['code']]=$this->getCount($this->iSurveyId."X".$oQuestion->gid."X".$oQuestion->qid,$value['code']);
+        }
+        if(!empty($aAnswersFilled)) {
+            //return least filled code
+            asort($aAnswersFilled);
+            return key($aAnswersFilled);
+        }
+        return "";
     }
     private function getPercentage($sColumn,$sValue=null,$sType="pc")
     {
