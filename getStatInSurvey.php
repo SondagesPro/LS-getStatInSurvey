@@ -4,12 +4,12 @@
  * Shows some statistics from previous answers
  *
  * @author Denis Chenu <denis@sondages.pro>
- * @copyright 2015-2021 Denis Chenu <http://sondages.pro>
+ * @copyright 2015-2022 Denis Chenu <http://sondages.pro>
  * @copyright 2021 Limesurvey GMBH <https://limesurvey.org>
  * @copyright 2015-2016 DareDo SA <http://www.daredo.net/>
  * @copyright 2016 Update France - Terrain d'études <http://www.updatefrance.fr/>
  * @license GPL v3
- * @version 2.2.1
+ * @version 2.3.3
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -119,9 +119,12 @@ class getStatInSurvey extends PluginBase {
                 $oEvent->set('help',$this->$questionhelpReplaced); /* 3.0 and version */
             }
             /* in 3.X and up Expression manager already happen */
-            $answersReplaced = $this->doReplacement($oEvent->get('answers'));
-            if(!is_null($answersReplaced)) {
-                $oEvent->set('answers',$answersReplaced);
+            /* in 5.X : must disable for some question , and can disble for all single question*/
+            if(!in_array($oEvent->get('type'), ['|','S','T','U','H'])) {
+                $answersReplaced = $this->doReplacement($oEvent->get('answers'));
+                if(!is_null($answersReplaced)) {
+                    $oEvent->set('answers',$answersReplaced);
+                }
             }
         }
     }
