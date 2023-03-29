@@ -116,7 +116,7 @@ class getStatInSurvey extends PluginBase {
             $questionhelpReplaced = $this->doReplacement($oQuestion->help,$qid);
             if(!is_null($questionhelpReplaced)) {
                 $oEvent->set('questionhelp',$questionhelpReplaced); /* pre 3.0 version */
-                $oEvent->set('help',$this->$questionhelpReplaced); /* 3.0 and version */
+                $oEvent->set('help',$questionhelpReplaced); /* 3.0 and version */
             }
             /* in 3.X and up Expression manager already happen */
             /* in 5.X : must disable for some question , and can disble for all single question*/
